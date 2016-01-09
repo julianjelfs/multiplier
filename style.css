@@ -1,6 +1,10 @@
 body {
     background-color : #66ffff;
 }
+h1 {
+    font-size:3em;
+    font-family:monospace;
+}
 p {
     font-family:helvetica;
     font-size:18px;

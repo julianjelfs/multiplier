@@ -80,13 +80,13 @@
                 r.appendChild(d);
                 var clicked = function (r, c, el) {
                     return function () {
-                        if(!started) return;
+                        if(!started || el.className.indexOf('hidden') < 0) return;
                         if((r*c) === target) {
                             el.className = el.className.replace('hidden','');
                             toFindInt -= 1;
                             toFind.innerText = toFindInt;
                             if(toFindInt === 0) {
-                                startFn();
+                                setTimeout(startFn, 1000);
                             }
                         } else {
                             el.className = el.className.replace('wrong', '') + ' wrong';

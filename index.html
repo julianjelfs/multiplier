@@ -6,6 +6,7 @@
     <body>
         <h1>Daisy's Multiplier Game</h1>
         <div id="lives">5</div>
+        <div id="countdown"></div>
 
         <div class="instructions">
             <p>
@@ -41,9 +42,30 @@
             targetEl = doc.getElementById('target'),
             toFind = doc.getElementById('to-find'),
             lives = doc.getElementById('lives'),
+            countdown = doc.getElementById('countdown'),
             target = 1,
             started = false,
-            toFindInt = 0;
+            toFindInt = 0,
+            timerStart = 0,
+            timer,
+            ellapsed,
+            secondsPerNumber = 10;
+
+        function startTimer(){
+            timerStart = +new Date();
+            ellapsed = 0;
+            timer = setInterval(function() {
+                ellapsed = (+new Date() - timerStart) / 1000;
+                var cd = Math.floor(secondsPerNumber - ellapsed);
+                if(cd === 0) {
+                    clearInterval(timer);
+                    if(decrementLives()){
+                        startTimer();
+                    }
+                }
+                countdown.innerText = cd;
+            }, 100);
+        }
 
         function startFn() {
             Array.prototype.map.call(doc.querySelectorAll('.grid-square'), function(s) {
@@ -60,6 +82,7 @@
                 }
             }
             toFind.innerText = toFindInt;
+            startTimer();
         }
 
         start.addEventListener('click', function() {
@@ -67,6 +90,16 @@
             start.innerText = 'Start';
             startFn();
         });
+
+        function decrementLives() {
+            var l = parseInt(lives.innerText) - 1;
+            lives.innerText = l;
+            if(l === 0) {
+                start.innerText = 'You lose! Start again';
+                started = false;
+            }
+            return l;
+        }
 
         for(var i=1; i<13; i++) {
             var r = doc.createElement('div');
@@ -88,14 +121,11 @@
                             if(toFindInt === 0) {
                                 setTimeout(startFn, 1000);
                             }
+                            clearInterval(timer);
+                            startTimer();
                         } else {
                             el.className = el.className.replace('wrong', '') + ' wrong';
-                            var l = parseInt(lives.innerText) - 1;
-                            lives.innerText = l;
-                            if(l === 0) {
-                                start.innerText = 'You lose! Start again';
-                                started = false;
-                            }
+                            decrementLives();
                         }
                     }
                 }

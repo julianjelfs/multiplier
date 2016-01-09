@@ -1,0 +1,106 @@
+<html>
+    <head>
+        <link href="style.css" rel="stylesheet" >
+    </head>
+
+    <body>
+        <h1>Multiplier</h1>
+        <div id="lives">5</div>
+
+        <div class="instructions">
+            <p>
+                Click all of the circles that have the value below.
+            </p>
+            <p>
+                Each time you click a wrong circle you will lose a life.
+            </p>
+            <p id="target">
+
+            </p>
+            <p>
+                You have <span id="to-find"></span> numbers to find
+            </p>
+
+            <p>
+                <button id="start">Start</button>
+            </p>
+        </div>
+        <div id="grid">
+        </div>
+    </body>
+
+    
+    <script>
+        function random() {
+            return Math.floor(Math.random() * 12) + 1;
+        }
+
+        var doc = document,
+            grid = doc.getElementById('grid'),
+            start = doc.getElementById('start'),
+            targetEl = doc.getElementById('target'),
+            toFind = doc.getElementById('to-find'),
+            lives = doc.getElementById('lives'),
+            target = 1,
+            started = false,
+            toFindInt = 0;
+
+        function startFn() {
+            Array.prototype.map.call(doc.querySelectorAll('.grid-square'), function(s) {
+                s.className = 'grid-square hidden';
+            });
+            targetEl.innerText = target = random() * random();
+            started = true;
+            toFindInt = 0;
+            for(var i = 1; i<13; i++) {
+                for(var j = 1; j<13; j++) {
+                    if((i*j) === target) {
+                        toFindInt += 1;
+                    }
+                }
+            }
+            toFind.innerText = toFindInt;
+        }
+
+        start.addEventListener('click', function() {
+            lives.innerText = 5;
+            start.innerText = 'Start';
+            startFn();
+        });
+
+        for(var i=1; i<13; i++) {
+            var r = doc.createElement('div');
+            r.className = 'grid-row';
+            grid.appendChild(r);
+            for(var j=1; j<13; j++) {
+                var d = doc.createElement('div');
+                var t = doc.createTextNode(i*j);
+                d.appendChild(t);
+                d.className = 'grid-square hidden';
+                r.appendChild(d);
+                var clicked = function (r, c, el) {
+                    return function () {
+                        if(!started) return;
+                        if((r*c) === target) {
+                            el.className = el.className.replace('hidden','');
+                            toFindInt -= 1;
+                            toFind.innerText = toFindInt;
+                            if(toFindInt === 0) {
+                                startFn();
+                            }
+                        } else {
+                            el.className = el.className.replace('wrong', '') + ' wrong';
+                            var l = parseInt(lives.innerText) - 1;
+                            lives.innerText = l;
+                            if(l === 0) {
+                                start.innerText = 'You lose! Start again';
+                            }
+                        }
+                    }
+                }
+                d.addEventListener('click', clicked(i, j, d));
+            }
+        }
+    </script>
+
+</html> 

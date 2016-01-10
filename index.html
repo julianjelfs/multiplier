@@ -64,8 +64,9 @@
                     if(decrementLives()){
                         startTimer();
                     }
+                } else {
+                    countdown.innerText = cd;
                 }
-                countdown.innerText = cd;
             }, 100);
         }
 

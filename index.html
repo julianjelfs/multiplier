@@ -5,21 +5,23 @@
 
     <body>
         <h1>Daisy's Multiplier Game</h1>
-        <div id="lives">5</div>
-        <div id="countdown"></div>
+        <div class="display">
+            <div id="lives">5</div>
+            <div id="countdown"></div>
+            <div id="search">
+                <div id="target"></div> 
+            </div>
+        </div>
 
         <div class="instructions">
             <p>
-                Click all of the circles that have the value below.
+                Click all of the circles that have the value above
             </p>
             <p>
-                Each time you click a wrong circle you will lose a life.
-            </p>
-            <p id="target">
-
+                Each time you click a wrong circle you will lose a life
             </p>
             <p>
-                You have <span id="to-find"></span> numbers to find
+                You have <span id="to-find">?</span> numbers to find
             </p>
 
             <p>
@@ -94,7 +96,7 @@
         function decrementLives() {
             var l = parseInt(lives.innerText) - 1;
             lives.innerText = l;
-            if(l === 0) {
+            if(l <= 0) {
                 start.innerText = 'You lose! Start again';
                 started = false;
             }

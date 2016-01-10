@@ -59,7 +59,7 @@
             timer = setInterval(function() {
                 ellapsed = (+new Date() - timerStart) / 1000;
                 var cd = Math.floor(secondsPerNumber - ellapsed);
-                if(cd === 0) {
+                if(cd <= 0) {
                     clearInterval(timer);
                     if(decrementLives()){
                         startTimer();
